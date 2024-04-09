@@ -6,7 +6,19 @@ import './css/styles.css';
 import './css/background.css';
 
 
-
+/**
+ * App component
+ *
+ * This is the main component of the application, which manages the overall game logic and state.
+ * It includes the following functionality:
+ *
+ * 1. Displaying the game board with shuffled English and French words.
+ * 2. Handling the drag-and-drop interaction between the Draggable and Placeholder components.
+ * 3. Updating the score and checking for the game over condition.
+ * 4. Providing a menu for starting and resetting the game.
+ *
+ * @returns {JSX.Element} - A React component that renders the game interface.
+ */
 function App() {
     const [draggable, setDraggable] = React.useState(null);
     const [score, setScore] = React.useState(0);
@@ -14,6 +26,8 @@ function App() {
     const [enShuffledIndex, setEnShuffledIndex] = React.useState([]);
     const [frShuffledIndex, setFrShuffledIndex] = React.useState([]);
     const [gameStarted, setGameStarted] = React.useState(false);
+
+    // Object containing the English and French word pairs
     const words = {
         1: {
             en: "forest",
@@ -65,12 +79,18 @@ function App() {
         },
     };
 
-
+    /**
+     * Updates the score by incrementing the current score by 1.
+     */
     const updateScore = () => {
         setScore(score + 1);
         console.log(score);
     };
 
+    /**
+     * Checks if the game is over by comparing the number of paired elements
+     * with the total number of word pairs.
+     */
     const checkGameOver = () => {
         console.log(pairedElements.length, Object.keys(words).length * 2);
         if (pairedElements.length === Object.keys(words).length * 2 - 2) {
@@ -79,6 +99,12 @@ function App() {
         }
     };
 
+    /**
+     * Handles the drop event when a draggable element is dropped onto a placeholder.
+     * Updates the pairedElements state and checks if the game is over.
+     * @param {string} id - The ID of the placeholder where the element was dropped.
+     * @param {string} draggableId - The ID of the draggable element that was dropped.
+     */
     const handleDrop = (id, draggableId) => {
         // Update the pairedElements state
         setPairedElements([...pairedElements, id, draggableId]);
@@ -86,6 +112,9 @@ function App() {
     };
 
 
+    /**
+     * Shuffles the order of the English and French word indices.
+     */
     const shuffleWords = () => {
         const enShuffledIndex = Object.keys(words).sort(() => Math.random() - 0.5);
         setEnShuffledIndex(enShuffledIndex);
@@ -93,6 +122,10 @@ function App() {
         setFrShuffledIndex(frShuffledIndex);
     };
 
+    /**
+     * Resets the game by setting the score to 0, clearing the paired elements,
+     * shuffling the words, and starting the game.
+     */
     const resetGame = () => {
         setScore(0);
         setPairedElements([]);
@@ -102,7 +135,9 @@ function App() {
     }
 
 
+
     return (
+        // JSX code for rendering the game interface
         <>
             <div className={'background'}>
                 <span></span>
