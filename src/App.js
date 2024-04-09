@@ -44,6 +44,7 @@ function Placeholder({word, id, draggable, updateScore, onDrop, isPaired}) {
     const handleDrop = (e) => {
         e.preventDefault();
         console.log('Dropped!');
+        console.log(draggable, id)
 
         if (draggable === id) {
             console.log('Match!');
@@ -75,6 +76,9 @@ function App() {
     const [draggable, setDraggable] = React.useState(null);
     const [score, setScore] = React.useState(0);
     const [pairedElements, setPairedElements] = React.useState([]);
+    const [shuffledEnWords, setShuffledEnWords] = React.useState([]);
+    const [shuffledFrWords, setShuffledFrWords] = React.useState([]);
+    const [gameStarted, setGameStarted] = React.useState(false);
     const words = {
         1: {
             en: "forest",
@@ -96,34 +100,34 @@ function App() {
             en: "camel",
             fr: "chameau"
         },
-        6: {
-            en: "butter",
-            fr: "beurre"
-        },
-        7: {
-            en: "bicycle",
-            fr: "vélo"
-        },
-        8: {
-            en: "railroad",
-            fr: "chemin de fer"
-        },
-        9: {
-            en: "folder",
-            fr: "dossier"
-        },
-        10: {
-            en: "weekly",
-            fr: "hebdomadaire"
-        },
-        11: {
-            en: "hungry",
-            fr: "affamé"
-        },
-        12: {
-            en: "limestone",
-            fr: "calcaire"
-        },
+        // 6: {
+        //     en: "butter",
+        //     fr: "beurre"
+        // },
+        // 7: {
+        //     en: "bicycle",
+        //     fr: "vélo"
+        // },
+        // 8: {
+        //     en: "railroad",
+        //     fr: "chemin de fer"
+        // },
+        // 9: {
+        //     en: "folder",
+        //     fr: "dossier"
+        // },
+        // 10: {
+        //     en: "weekly",
+        //     fr: "hebdomadaire"
+        // },
+        // 11: {
+        //     en: "hungry",
+        //     fr: "affamé"
+        // },
+        // 12: {
+        //     en: "limestone",
+        //     fr: "calcaire"
+        // },
     };
 
     const updateScore = () => {
@@ -131,10 +135,47 @@ function App() {
         console.log(score);
     };
 
+    const checkGameOver = () => {
+        console.log(pairedElements.length, Object.keys(words).length * 2);
+    if (pairedElements.length === Object.keys(words).length * 2 - 2) {
+        console.log('Game Over!');
+        setGameStarted(false);
+    }
+  };
+
     const handleDrop = (id, draggableId) => {
         // Update the pairedElements state
         setPairedElements([...pairedElements, id, draggableId]);
+        checkGameOver();
     };
+
+
+    const shuffleWords = () => {
+        const shuffledEnWords = [];
+        const shuffledFrWords = [];
+        for (let i = 1; i <= Object.keys(words).length; i++) {
+            shuffledEnWords.push(
+                words[i].en
+            );
+            shuffledFrWords.push(
+                words[i].fr
+            );
+        }
+        // shuffle the arrays
+        shuffledEnWords.sort(() => Math.random() - 0.5);
+        shuffledFrWords.sort(() => Math.random() - 0.5);
+        setShuffledEnWords(shuffledEnWords);
+        setShuffledFrWords(shuffledFrWords);
+    };
+
+    const resetGame = () => {
+        setScore(0);
+        setPairedElements([]);
+        shuffleWords();
+        setGameStarted(true)
+        // remove the paired class from all elements
+    }
+
 
     return (
         <>
@@ -151,57 +192,44 @@ function App() {
                 <span></span>
             </div>
             <div className={'game-container'}>
-                <div className={'score'}>{score}</div>
+                {gameStarted && <div className={'score'}>{score}</div>}
                 <div className={'board'}>
                     <div>
-                        <Draggable
-                            word={'Hello 1'}
-                            id={1}
-                            setDraggable={setDraggable}
-                            isPaired={pairedElements.includes(1) || pairedElements.includes(1 + '-draggable')}
-                        />
-                        <Draggable
-                            word={'Hello 2'}
-                            id={2}
-                            setDraggable={setDraggable}
-                            isPaired={pairedElements.includes(2) || pairedElements.includes(2 + '-draggable')}
-                        />
-                        <Draggable
-                            word={'Hello 3'}
-                            id={3}
-                            setDraggable={setDraggable}
-                            isPaired={pairedElements.includes(3) || pairedElements.includes(3 + '-draggable')}
-                        />
+                        {/*  English words  */}
+                        {shuffledEnWords.map((word, index) => (
+                            <Draggable
+                                word={word}
+                                id={index}
+                                setDraggable={setDraggable}
+                                isPaired={(pairedElements.includes(index) || pairedElements.includes(index + '-draggable')) && gameStarted}
+                            />
+                        ))}
                     </div>
 
                     <div>
-                        <Placeholder
-                            word={'World 1'}
-                            id={1}
-                            draggable={draggable}
-                            updateScore={updateScore}
-                            onDrop={handleDrop}
-                            isPaired={pairedElements.includes(1) || pairedElements.includes(1 + '-placeholder')}
-                        />
-                        <Placeholder
-                            word={'World 2'}
-                            id={2}
-                            draggable={draggable}
-                            updateScore={updateScore}
-                            onDrop={handleDrop}
-                            isPaired={pairedElements.includes(2) || pairedElements.includes(2 + '-placeholder')}
-                        />
-                        <Placeholder
-                            word={'World 3'}
-                            id={3}
-                            draggable={draggable}
-                            updateScore={updateScore}
-                            onDrop={handleDrop}
-                            isPaired={pairedElements.includes(3) || pairedElements.includes(3 + '-placeholder')}
-                        />
+                        {/*  French words  */}
+                        {shuffledFrWords.map((word, index) => (
+                            <Placeholder
+                                word={word}
+                                id={index}
+                                draggable={draggable}
+                                updateScore={updateScore}
+                                onDrop={handleDrop}
+                                isPaired={(pairedElements.includes(index) || pairedElements.includes(index + '-placeholder')) && gameStarted}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
+            {!gameStarted && <div className={'menu'}>
+                <div>
+                    Drag and drop the English words to their French translations!
+                </div>
+                <button className={'start-button'} onClick={() => {
+                    resetGame()
+                }}>Go!
+                </button>
+            </div>}
         </>
     );
 }
