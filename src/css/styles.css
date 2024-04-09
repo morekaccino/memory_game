@@ -19,12 +19,14 @@ body {
 }
 
 .game-container {
-    background: aliceblue;
+    /*background: linear-gradient(45deg, #e1d186, #fd9c7f);*/
 
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
+
+    position: absolute;
 
     flex-direction: column;
 
@@ -37,7 +39,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    color: black;
+    color: white;
     font-size: 10rem;
     font-weight: bold;
 
@@ -58,8 +60,10 @@ body {
     padding: 1rem;
     margin: 1rem;
 
-    background: bisque;
-    color: black;
+    background: rgba(232, 164, 248, 0.68);
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
     border-radius: 1rem;
     width: 200px;
 }
@@ -72,8 +76,10 @@ body {
     padding: 1rem;
     margin: 1rem;
 
-    background: aquamarine;
-    color: black;
+    background: rgba(117, 167, 236, 0.68);
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
     border-radius: 1rem;
     width: 200px;
 
