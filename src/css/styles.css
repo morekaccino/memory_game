@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: 'Roboto', sans-serif;
+
+    transition: all 0.3s ease-in-out;
+}
+
+body {
+    overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.game-container {
+    background: aliceblue;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    flex-direction: column;
+
+    height: 100vh;
+    width: 100vw;
+}
+
+.score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: black;
+    font-size: 10rem;
+    font-weight: bold;
+
+}
+
+
+.board {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 1rem;
+    margin: 1rem;
+
+    background: bisque;
+    color: black;
+    border-radius: 1rem;
+    width: 200px;
+}
+
+.draggable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 1rem;
+    margin: 1rem;
+
+    background: aquamarine;
+    color: black;
+    border-radius: 1rem;
+    width: 200px;
+
+    cursor: grab;
+
+
+}
+
+
+.dragging {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    color: transparent;
+
+    cursor: grabbing;
+
+    z-index: 100;
+
+    transition: all 0.01ms ease-in-out;
+}
+
+.paired {
+    background: rgba(0, 0, 0, 0.1);
+    color: transparent;
+
+    cursor: not-allowed;
+
+    transition: all 0.01ms ease-in-out;
+}
