@@ -8,6 +8,29 @@ import './css/styles.css';
 import './css/background.css';
 
 
+const ConfettiEffectManager = ({effects}) => {
+    return (
+        <>
+            {effects.map((effect, index) => (
+                effect.isExploding && (
+                    <ConfettiExplosion
+                        key={index}
+                        duration={effect.duration}
+                        force={effect.force}
+                        particleCount={effect.particleCount}
+                        particleSize={effect.particleSize}
+                        position={effect.position}
+                        rect={effect.rect}
+                        recycle={effect.recycle}
+                        tweenOptions={effect.tweenOptions}
+                    />
+                )
+            ))}
+        </>
+    );
+};
+
+
 function Draggable({word, id, setDraggable, isPaired}) {
     const [dragging, setDragging] = React.useState(false);
 
@@ -51,13 +74,42 @@ function Placeholder({word, id, draggable, updateScore, onDrop, isPaired}) {
             updateScore();
             onDrop(id, draggable);
             setIsExploding(true);
+            addConfettiEffect({
+                isExploding: true,
+                duration: 3000,
+                force: 0.8,
+                particleCount: 50,
+                particleSize: 15,
+                position: 'absolute',
+                rect: 'screen',
+                recycle: true,
+                tweenOptions: {ease: 'linear'},
+            });
             playCheer()
+
+            // remove confetti effect after 5 seconds
+            setTimeout(() => {
+                removeConfettiEffect(0);
+            }, 5000);
         }
     };
 
+    const [confettiEffects, setConfettiEffects] = React.useState([]);
+
+    const addConfettiEffect = (effect) => {
+        setConfettiEffects([...confettiEffects, effect]);
+    };
+
+    const removeConfettiEffect = (index) => {
+        const newEffects = [...confettiEffects];
+        newEffects.splice(index, 1);
+        setConfettiEffects(newEffects);
+    };
+
+
     return (
         <>
-            {isExploding && <ConfettiExplosion/>}
+            <ConfettiEffectManager effects={confettiEffects}/>
             <div
                 className={`placeholder ${isPaired ? 'paired' : ''}`}
                 id={`placeholder-${id}`}
@@ -130,6 +182,9 @@ function App() {
         // },
     };
 
+    const [confettiEffects, setConfettiEffects] = React.useState([]);
+
+
     const updateScore = () => {
         setScore(score + 1);
         console.log(score);
@@ -137,11 +192,11 @@ function App() {
 
     const checkGameOver = () => {
         console.log(pairedElements.length, Object.keys(words).length * 2);
-    if (pairedElements.length === Object.keys(words).length * 2 - 2) {
-        console.log('Game Over!');
-        setGameStarted(false);
-    }
-  };
+        if (pairedElements.length === Object.keys(words).length * 2 - 2) {
+            console.log('Game Over!');
+            setGameStarted(false);
+        }
+    };
 
     const handleDrop = (id, draggableId) => {
         // Update the pairedElements state
