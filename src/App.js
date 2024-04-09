@@ -75,6 +75,56 @@ function App() {
     const [draggable, setDraggable] = React.useState(null);
     const [score, setScore] = React.useState(0);
     const [pairedElements, setPairedElements] = React.useState([]);
+    const words = {
+        1: {
+            en: "forest",
+            fr: "forêt"
+        },
+        2: {
+            en: "siblings",
+            fr: "frères et sœurs"
+        },
+        3: {
+            en: "cereal",
+            fr: "céréales"
+        },
+        4: {
+            en: "desk",
+            fr: "bureau"
+        },
+        5: {
+            en: "camel",
+            fr: "chameau"
+        },
+        6: {
+            en: "butter",
+            fr: "beurre"
+        },
+        7: {
+            en: "bicycle",
+            fr: "vélo"
+        },
+        8: {
+            en: "railroad",
+            fr: "chemin de fer"
+        },
+        9: {
+            en: "folder",
+            fr: "dossier"
+        },
+        10: {
+            en: "weekly",
+            fr: "hebdomadaire"
+        },
+        11: {
+            en: "hungry",
+            fr: "affamé"
+        },
+        12: {
+            en: "limestone",
+            fr: "calcaire"
+        },
+    };
 
     const updateScore = () => {
         setScore(score + 1);
