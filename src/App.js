@@ -124,8 +124,8 @@ function App() {
     const [draggable, setDraggable] = React.useState(null);
     const [score, setScore] = React.useState(0);
     const [pairedElements, setPairedElements] = React.useState([]);
-    const [shuffledEnWords, setShuffledEnWords] = React.useState([]);
-    const [shuffledFrWords, setShuffledFrWords] = React.useState([]);
+    const [enShuffledIndex, setEnShuffledIndex] = React.useState([]);
+    const [frShuffledIndex, setFrShuffledIndex] = React.useState([]);
     const [gameStarted, setGameStarted] = React.useState(false);
     const words = {
         1: {
@@ -148,37 +148,35 @@ function App() {
             en: "camel",
             fr: "chameau"
         },
-        // 6: {
-        //     en: "butter",
-        //     fr: "beurre"
-        // },
-        // 7: {
-        //     en: "bicycle",
-        //     fr: "vélo"
-        // },
-        // 8: {
-        //     en: "railroad",
-        //     fr: "chemin de fer"
-        // },
-        // 9: {
-        //     en: "folder",
-        //     fr: "dossier"
-        // },
-        // 10: {
-        //     en: "weekly",
-        //     fr: "hebdomadaire"
-        // },
-        // 11: {
-        //     en: "hungry",
-        //     fr: "affamé"
-        // },
-        // 12: {
-        //     en: "limestone",
-        //     fr: "calcaire"
-        // },
+        6: {
+            en: "butter",
+            fr: "beurre"
+        },
+        7: {
+            en: "bicycle",
+            fr: "vélo"
+        },
+        8: {
+            en: "railroad",
+            fr: "chemin de fer"
+        },
+        9: {
+            en: "folder",
+            fr: "dossier"
+        },
+        10: {
+            en: "weekly",
+            fr: "hebdomadaire"
+        },
+        11: {
+            en: "hungry",
+            fr: "affamé"
+        },
+        12: {
+            en: "limestone",
+            fr: "calcaire"
+        },
     };
-
-    const [confettiEffects, setConfettiEffects] = React.useState([]);
 
 
     const updateScore = () => {
@@ -202,21 +200,10 @@ function App() {
 
 
     const shuffleWords = () => {
-        const shuffledEnWords = [];
-        const shuffledFrWords = [];
-        for (let i = 1; i <= Object.keys(words).length; i++) {
-            shuffledEnWords.push(
-                words[i].en
-            );
-            shuffledFrWords.push(
-                words[i].fr
-            );
-        }
-        // shuffle the arrays
-        shuffledEnWords.sort(() => Math.random() - 0.5);
-        shuffledFrWords.sort(() => Math.random() - 0.5);
-        setShuffledEnWords(shuffledEnWords);
-        setShuffledFrWords(shuffledFrWords);
+        const enShuffledIndex = Object.keys(words).sort(() => Math.random() - 0.5);
+        setEnShuffledIndex(enShuffledIndex);
+        const frShuffledIndex = Object.keys(words).sort(() => Math.random() - 0.5);
+        setFrShuffledIndex(frShuffledIndex);
     };
 
     const resetGame = () => {
@@ -247,26 +234,27 @@ function App() {
                 <div className={'board'}>
                     <div>
                         {/*  English words  */}
-                        {shuffledEnWords.map((word, index) => (
+                        {enShuffledIndex.map((i) => (
                             <Draggable
-                                word={word}
-                                id={index}
+                                word={words[i].en}
+                                id={i}
                                 setDraggable={setDraggable}
-                                isPaired={(pairedElements.includes(index) || pairedElements.includes(index + '-draggable')) && gameStarted}
+                                isPaired={(pairedElements.includes(i) || pairedElements.includes(i + '-placeholder')) && gameStarted}
                             />
                         ))}
+
                     </div>
 
                     <div>
                         {/*  French words  */}
-                        {shuffledFrWords.map((word, index) => (
+                        {frShuffledIndex.map((i) => (
                             <Placeholder
-                                word={word}
-                                id={index}
+                                word={words[i].fr}
+                                id={i}
                                 draggable={draggable}
                                 updateScore={updateScore}
                                 onDrop={handleDrop}
-                                isPaired={(pairedElements.includes(index) || pairedElements.includes(index + '-placeholder')) && gameStarted}
+                                isPaired={(pairedElements.includes(i) || pairedElements.includes(i + '-placeholder')) && gameStarted}
                             />
                         ))}
                     </div>
