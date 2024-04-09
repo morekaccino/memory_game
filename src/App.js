@@ -21,8 +21,6 @@ const ConfettiEffectManager = ({effects}) => {
                         particleSize={effect.particleSize}
                         position={effect.position}
                         rect={effect.rect}
-                        recycle={effect.recycle}
-                        tweenOptions={effect.tweenOptions}
                     />
                 )
             ))}
@@ -50,7 +48,7 @@ function Draggable({word, id, setDraggable, isPaired}) {
             id={`draggable-${id}`}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
-            draggable={"true"}
+            draggable={true}
         >
             {word}
         </div>
@@ -76,14 +74,12 @@ function Placeholder({word, id, draggable, updateScore, onDrop, isPaired}) {
             setIsExploding(true);
             addConfettiEffect({
                 isExploding: true,
-                duration: 3000,
+                duration: 2000,
                 force: 0.8,
                 particleCount: 50,
                 particleSize: 15,
                 position: 'absolute',
                 rect: 'screen',
-                recycle: true,
-                tweenOptions: {ease: 'linear'},
             });
             playCheer()
 
